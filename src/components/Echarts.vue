@@ -1,6 +1,5 @@
 <template>
-  <div :id="name" style="width: 600px;height:400px;" v-for="(value,name) in models">
-  </div>
+  <div :id="name" style="height: 400px" v-for="(value, name) in models"></div>
 </template>
 
 <script>
@@ -43,12 +42,12 @@ export default {
         },
         series: [
           {
-            name: '预测值',
+            name: '真实值',
             type: 'line',
             data: [120, 132, 101, 134, 90, 230, 210]
           },
           {
-            name: '真实值',
+            name: '预测值',
             type: 'line',
             smooth: true,
             data: [220, 182, 191, 234, 290, 330, 310]
@@ -69,27 +68,41 @@ export default {
   },
   watch: {
     // whenever question changes, this function will run
-    listenChange(newVal, oldVal) {
-      this.$nextTick(() => {
-        console.log(this.models)
-        for (let model in this.models) {
-          var chartDom = document.getElementById(model);
-          var myChart = echarts.init(chartDom);
-          this.option.title.text = model
-          console.log(this.dataset)
-          this.option.series.at(0).data = this.dataset
-          this.option.series.at(1).data = this.models[model]
+    listenChange: {
+      handler(newVal, oldVal) {
+        this.$nextTick(() => {
+          console.log("models:", this.models)
+          for (let model in this.models) {
+            var chartDom = document.getElementById(model);
+            var myChart = echarts.init(chartDom);
+            this.option.title.text = model
+            console.log(this.dataset)
+            this.option.xAxis.data = this.dataset["xAxis"]
+            this.option.series.at(0).data = this.dataset["yAxis"]
+            this.option.series.at(1).data = this.models[model]
 
-          let arr = []
-          // push方法
-          for (let i = 0; i <= Object.keys(this.models).length+10; i++) { arr.push(i) }
-          console.log("arr:",arr)
-          this.option.xAxis.data = arr
-          this.option && myChart.setOption(this.option);
-        }
-      })
+            this.option && myChart.setOption(this.option);
+          }
+        })
+      },
+      deep: true
     }
   },
+  mounted() {
+    console.log("models:", this.models)
+    for (let model in this.models) {
+      var chartDom = document.getElementById(model);
+      var myChart = echarts.init(chartDom);
+      this.option.title.text = model
+      console.log(this.dataset)
+      this.option.xAxis.data = this.dataset["xAxis"]
+      this.option.series.at(0).data = this.dataset["yAxis"]
+      this.option.series.at(1).data = this.models[model]
+
+      this.option && myChart.setOption(this.option);
+    }
+  }
+
 };
 </script>
 

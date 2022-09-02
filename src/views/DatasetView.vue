@@ -7,12 +7,20 @@
 
   <p></p>
   <p></p>
-  <div>加载数据集:</div>
+  <div>数据集浏览:</div>
   <p></p>
   <main>
-    <SelectVue :options="all_datasets">
-      <button @click="loadData"> 加载数据集 </button>
+    <SelectVue :options="all_datasets" @getSelectedDataset="selectDataset">
+      <button @click="loadData"> 数据集浏览 </button>
     </SelectVue>
+  </main>
+  <p></p>
+  <main>
+    <EchartsDataset :dataset="dataset" @changeTag="changeTag"></EchartsDataset>
+  </main>
+  <main>
+    <div>当前数据集标记的集合:</div>
+    {{ tagSet }}
   </main>
 
 </template>
@@ -23,60 +31,67 @@ import SelectVue from '../components/select.vue';
 import EchartsVue from '../components/Echarts.vue';
 import MutliselectVue from '../components/mutliselect.vue';
 import service from '../utils/request';
+import EchartsDataset from '../components/EchartsDataset.vue';
+
 export default {
   name: "dataset",
   data() {
     return {
       all_models: [],
-      all_datasets:[1],
-      select_models: [],
-      select_dataset: '',
+      all_datasets: [1],
+      selected_models: [],
+      selected_dataset: '',
       echarts_dataset: {},
-      echarts_models:{},
+      echarts_models: {},
+      dataset: {},
+      tagSet: [],
     }
   },
   props: {},
   methods: {
-    selectModels(models) {
-      this.select_models = models
-    },
     selectDataset(dataset) {
-      this.select_dataset = dataset      
+      this.selected_dataset = dataset
     },
-    fitting() {
-      service.post("getResultOfModel", {
-        "models": this.select_models,
-        "dataset":this.select_dataset,
-      }).then(
+    loadData() {
+      console.log("getDataset:", this.selected_dataset)
+      service.get("getDataset?dataset=" + this.selected_dataset).then(
         (response) => {
-          console.log("response:", response.data.dataset, response.data.model1)
           console.log(response.data)
-          for (let key in response.data) {
-            if (key.indexOf("dataset") == 0) {
-              this.echarts_dataset = response.data.dataset
-            } else {
-              this.echarts_models[key] = response.data[key]
-              }
-            }
+          this.dataset = response.data
         }
       )
+      let _this = this;
+      let fun = function () {
+        console.log(_this.dataset["name"])
+        service.get("getTagData?dataset="+_this.dataset["name"]).then(
+        (response) => {
+          console.log("tagset",response.data)
+          _this.tagSet = response.data
+        }
+      )
+      }
+      setTimeout(fun, 1000)
+      
+    },
+    changeTag(obj) {
+      service.get("getTagData?dataset="+this.dataset["name"]).then(
+        (response) => {
+          console.log(response.data)
+          this.tagSet = response.data
+        }
+      )
+
     }
   },
   mounted() {
-    service.get("getAllModels").then(
-      (response) => {
-        this.all_models = response.data
-        console.log("all models:",this.all_models)
-      }
-    )
     service.get("getAllDatasets").then(
       (response) => {
         this.all_datasets = response.data
-        console.log("all datasets:",this.all_datasets)
+        console.log("all datasets:", this.all_datasets)
       }
     )
   },
-  components: { Upload, SelectVue, EchartsVue, MutliselectVue }
+  components: { Upload, SelectVue, EchartsVue, MutliselectVue, EchartsDataset }
 };
 </script>
 

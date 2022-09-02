@@ -16,11 +16,6 @@ export default {
             value:'',
         }
     },
-    methods: {
-        loadData() {
-            console.log(this.value)
-        }
-    },
     props: ['options'],
     emits: ["getSelectedDataset"],
     watch: {

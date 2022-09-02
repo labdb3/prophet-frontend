@@ -51,21 +51,25 @@ export default {
         "dataset": this.select_dataset,
       }).then(
         (response) => {
-          console.log("response:", response.data.dataset, response.data.model1)
-          console.log(response.data)
+          console.log("############")
+          console.log("response:",response.data)
           for (let key in response.data) {
             if (key.indexOf("dataset") == 0) {
-              this.echarts_dataset = response.data.dataset
+              this.echarts_dataset["xAxis"] = response.data.dataset_xAxis
+              this.echarts_dataset["yAxis"] = response.data.dataset_yAxis
+            } else if(key.indexOf("k")==0){
+              this.k = response.data["k"];
             } else {
               this.echarts_models[key] = response.data[key]
             }
           }
+          console.log("changed:",this.echarts_dataset,this.echarts_models)
         }
       )
     }
   },
   mounted() {
-    service.get("getAllModels").then(
+    service.get("getAllMetaModels").then(
       (response) => {
         this.all_models = response.data
         console.log("all models:", this.all_models)
