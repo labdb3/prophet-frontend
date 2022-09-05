@@ -22,6 +22,7 @@ export default {
     console.log(typeof this.$route.params.data);
     var list = decodeURIComponent(this.$route.params.data);
     var data = JSON.parse(list);
+    console.log("转译后的数据data:",data)
     this.echarts_dataset = data["echarts_dataset"];
     this.echarts_models = data["echarts_models"];
     
@@ -58,7 +59,7 @@ changepoint_prior_scale=${data['changepoint_prior_scale']}
 seasonality_prior_scale =${data['seasonality_prior_scale']}
 
 模型学习到的趋势k值为
-K=${data["k"]}
+K=${data['pre_k']}
 调节后的趋势k值为：
 K=${data["k"]}
 

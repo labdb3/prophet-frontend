@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2 align="center">温室模型调优</h2>
+    <h2 align="center">翁氏模型调优</h2>
     <div>
       数据集:
       <el-select v-model="value" class="m-2" placeholder="Select" size="large">
@@ -62,15 +62,15 @@ import Echarts from "./Echarts.vue";
 import EchartsLoadModel from "./EchartsLoadModel.vue";
 
 export default {
-  name: "wensi",
+  name: "翁氏模型",
   created() {},
   data() {
     return {
       value: "",
       options: [],
-      a: -6.495156943324077,
-      b: 6.952106129349494,
-      c: -0.3863897712009849,
+      a: 0,
+      b: 0,
+      c: 0,
       years: 5,
       echarts_dataset: {},
       echarts_models: {},
@@ -100,7 +100,7 @@ export default {
     fitting() {
       service
         .post("getResultWithParams", {
-          model: "wensi",
+          model: "翁氏模型",
           dataset: this.value,
           params: {
             a: parseFloat(this.a),
@@ -119,6 +119,10 @@ export default {
               this.echarts_models[key] = response.data[key];
             }
           }
+          this.a = response.data["a"];
+          this.b = response.data["b"];
+          this.c = response.data["c"];
+
           console.log("changed:", this.echarts_dataset, this.echarts_models);
         });
     },
@@ -128,7 +132,7 @@ export default {
       if (name != "" && name !=null ) {
         console.log("保存模型成功")
         service.post("saveModel", {
-            model: "wensi",
+            model: "翁氏模型",
             dataset: this.value,
             params: {
               a: parseFloat(this.a),
@@ -145,7 +149,7 @@ export default {
     loadModel() {
       service
         .post("loadModel", {
-          model:"wensi",
+          model:"翁氏模型",
           name: this.curModel,
           years: parseInt(this.years),
         })
@@ -170,7 +174,7 @@ export default {
       this.options = response.data;
       console.log("all datasets:", this.all_datasets);
     });
-    service.get("getSavedModels?model=wensi").then((response) => {
+    service.get("getSavedModels?model=翁氏模型").then((response) => {
       console.log(response.data);
       this.savedModels = response.data;
     });

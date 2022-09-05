@@ -92,7 +92,7 @@ export default {
     fitting() {
       service
         .post("getResultWithParams", {
-          model: "GM",
+          model: "灰度预测",
           dataset: this.value,
           params: {
             nums: parseFloat(this.nums),
@@ -120,7 +120,7 @@ export default {
       if (name != "" && name !=null ) {
         console.log("保存模型成功")
         service.post("saveModel", {
-            model: "GM",
+            model: "灰度预测",
             dataset: this.value,
             params: {
               nums: parseFloat(this.nums),
@@ -137,7 +137,7 @@ export default {
     loadModel() {
       service
         .post("loadModel", {
-          model:"GM",
+          model:"灰度预测",
           name: this.curModel,
           years: parseInt(this.years),
         })
@@ -162,7 +162,7 @@ export default {
       this.options = response.data;
       console.log("all datasets:", this.all_datasets);
     });
-    service.get("getSavedModels?model=GM").then((response) => {
+    service.get("getSavedModels?model=灰度预测").then((response) => {
       console.log(response.data);
       this.savedModels = response.data;
     });
