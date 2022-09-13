@@ -4,7 +4,6 @@
 
 <script>
 import * as echarts from "echarts";
-import { SelectProps } from "element-plus/es/components/select-v2/src/defaults";
 import service from "../utils/request";
 
 export default {
@@ -46,7 +45,7 @@ export default {
       },
     };
   },
-  props: ["dataset"],
+  props: ["dataset","cur_tag"],
   methods: {},
   emits :['changeTag'],
   watch: {
@@ -61,7 +60,7 @@ export default {
           console.log(tmp_dataset);
           service
             .get(
-              "saveTag?dataset=" + tmp_dataset["name"] + "&year=" + params.name
+              "saveTag?dataset=" + tmp_dataset["name"] + "&year=" + params.name + "&cur_tag=" + _this.cur_tag
             )
             .then((response) => {
               console.log(response);

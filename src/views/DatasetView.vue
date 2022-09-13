@@ -16,7 +16,11 @@
   </main>
   <p></p>
   <main>
-    <EchartsDataset :dataset="dataset" @changeTag="changeTag"></EchartsDataset>
+    <EchartsDataset :dataset="dataset" :cur_tag="cur_tag" @changeTag="changeTag" ></EchartsDataset>
+  </main>
+  <main>
+    <div>选择所属标记的集合</div> 
+    <SelectTag :options="all_tags" @getSelectedTag="selectTag"></SelectTag>
   </main>
   <main>
     <div>当前数据集标记的集合:</div>
@@ -32,6 +36,7 @@ import EchartsVue from '../components/Echarts.vue';
 import MutliselectVue from '../components/mutliselect.vue';
 import service from '../utils/request';
 import EchartsDataset from '../components/EchartsDataset.vue';
+import SelectTag from '../components/selectTag.vue'
 
 export default {
   name: "dataset",
@@ -45,12 +50,17 @@ export default {
       echarts_models: {},
       dataset: {},
       tagSet: [],
+      all_tags: [],
+      cur_tag:'',
     }
   },
   props: {},
   methods: {
     selectDataset(dataset) {
       this.selected_dataset = dataset
+    },
+    selectTag(tag) {
+      this.cur_tag = tag;
     },
     loadData() {
       console.log("getDataset:", this.selected_dataset)
@@ -63,7 +73,7 @@ export default {
       let _this = this;
       let fun = function () {
         console.log(_this.dataset["name"])
-        service.get("getTagData?dataset="+_this.dataset["name"]).then(
+        service.get("getTagData?dataset="+_this.dataset["name"]+"&cur_tag="+_this.cur_tag).then(
         (response) => {
           console.log("tagset",response.data)
           _this.tagSet = response.data
@@ -74,7 +84,7 @@ export default {
       
     },
     changeTag(obj) {
-      service.get("getTagData?dataset="+this.dataset["name"]).then(
+      service.get("getTagData?dataset="+this.dataset["name"]+"&cur_tag="+_this.cur_tag).then(
         (response) => {
           console.log(response.data)
           this.tagSet = response.data
@@ -91,7 +101,7 @@ export default {
       }
     )
   },
-  components: { Upload, SelectVue, EchartsVue, MutliselectVue, EchartsDataset }
+  components: { Upload, SelectVue, EchartsVue, MutliselectVue, EchartsDataset,SelectTag }
 };
 </script>
 

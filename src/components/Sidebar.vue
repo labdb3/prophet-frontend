@@ -1,5 +1,5 @@
 <template>
-  <main align="center"><font size="6"><b>中石化合作项目</b></font></main>
+  <main align="center"><font size="6"><b>探明储量增长过程模拟数据分析</b></font></main>
   <el-container>
     <el-header>
       <div class='sys-title'>
