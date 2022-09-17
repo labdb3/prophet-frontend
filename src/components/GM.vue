@@ -77,6 +77,7 @@ export default {
       curModel: "",
       loadModel_echarts_dataset: {},
       loadModel_echarts_models: {},
+      msg:'',
     };
   },
   props: {},
@@ -107,7 +108,11 @@ export default {
             if (key.indexOf("dataset") == 0) {
               this.echarts_dataset["xAxis"] = response.data.dataset_xAxis;
               this.echarts_dataset["yAxis"] = response.data.dataset_yAxis;
-            } else {
+            } else if (key == "msg") {
+              window.alert(response.data["msg"])
+
+            }
+            else {
               this.echarts_models[key] = response.data[key];
             }
           }

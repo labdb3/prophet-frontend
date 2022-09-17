@@ -19,10 +19,6 @@
     <EchartsDataset :dataset="dataset" :cur_tag="cur_tag" @changeTag="changeTag" ></EchartsDataset>
   </main>
   <main>
-    <div>选择所属标记的集合</div> 
-    <SelectTag :options="all_tags" @getSelectedTag="selectTag"></SelectTag>
-  </main>
-  <main>
     <div>当前数据集标记的集合:</div>
     {{ tagSet }}
   </main>
