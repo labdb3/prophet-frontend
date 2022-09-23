@@ -1,6 +1,5 @@
 <template>
-    <div id="load_model" style="height:400px;" v-for="(value, name) in models">
-    </div>
+    <div :id="name" style="height: 400px" v-for="(value, name) in all_models"></div>
 </template>
 
 <script>
@@ -9,6 +8,11 @@ import * as echarts from 'echarts';
 export default {
     data() {
         return {
+            all_models: {
+                "model_prophet": "model_prophet",
+                "model_翁氏模型": "model_翁氏模型",
+                "model_灰度预测":"model_灰度预测",
+            },
             option: {
                 title: {
                     text: '模型预测结果',
@@ -56,14 +60,11 @@ export default {
             },
         };
     },
-    props: ['dataset', 'models'],
+    props: ['models'],
     methods: {},
     computed: {
         listenChange() {
-            const { dataset, models } = this
-            return {
-                dataset, models
-            }
+            return this.models
         }
     },
     watch: {
@@ -72,13 +73,13 @@ export default {
             handler(newVal, oldVal) {
                 this.$nextTick(() => {
                     console.log("models:", this.models)
-                    for (let model in this.models) {
-                        var chartDom = document.getElementById("load_model");
+                    let arr=["model_prophet","model_翁氏模型","model_灰度预测"]
+                    for (let model of arr) {
+                        var chartDom = document.getElementById(model);
                         var myChart = echarts.init(chartDom);
-                        this.option.title.text = model
-                        console.log(this.dataset)
-                        this.option.xAxis.data = this.dataset["xAxis"]
-                        this.option.series.at(0).data = this.dataset["yAxis"]
+                        this.option.title.text = model.split("_")[1] + " " + this.models[model+"_dataset_name"]
+                        this.option.xAxis.data = this.models[model+"_dataset_xAxis"]
+                        this.option.series.at(0).data = this.models[model+"_dataset_yAxis"]
                         this.option.series.at(1).data = this.models[model]
 
                         this.option && myChart.setOption(this.option);

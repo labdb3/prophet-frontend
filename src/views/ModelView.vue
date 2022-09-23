@@ -1,88 +1,96 @@
 <template>
-  <div>选择数据集:</div>
   <p></p>
   <main>
-    <SelectVue :options="all_datasets" @getSelectedDataset="selectDataset"></SelectVue>
+    选择保存的prophet模型:&nbsp;&nbsp;
+    <selectVue :options="all_models_1" @getSelectedDataset="selectModels_1"></selectVue>
   </main>
-  <p></p>
-  <div>选择模型:</div>
-  <p></p>
   <main>
-    <MutliselectVue :options="all_models" @getSelectedModels="selectModels"></MutliselectVue>
+  选择保存的翁氏模型:&nbsp;&nbsp;
+    <selectVue :options="all_models_2" @getSelectedDataset="selectModels_2"></selectVue>
+  </main>
+  <main>
+  选择保存的灰度预测模型:&nbsp;&nbsp;
+    <selectVue :options="all_models_3" @getSelectedDataset="selectModels_3"></selectVue>
   </main>
   <p></p>
+  <p>
+  预测年数: &nbsp;&nbsp;
+    <el-input
+      v-model="years"
+      style="width: 180px"
+      size="large"
+      placeholder="Please Input"
+    />
+  </p>
   <button @click="fitting">拟合结果</button>
   <p></p>
   <p></p>
   <main>
-    <EchartsVue :dataset="echarts_dataset" :models="echarts_models"></EchartsVue>
+    <EchartsLoadModel_mutli :models="echarts_models"></EchartsLoadModel_mutli>
   </main>
 </template>
 
 <script>
 import Upload from '../components/upload.vue'
 import SelectVue from '../components/select.vue';
-import EchartsVue from '../components/Echarts.vue';
-import MutliselectVue from '../components/mutliselect.vue';
 import service from '../utils/request';
+import EchartsLoadModel_mutli from "../components/EchartsLoadModel_mutli.vue"
+
 export default {
   name: "dataset",
   data() {
     return {
-      all_models: [],
-      all_datasets: [1],
-      select_models: [],
-      select_dataset: '',
-      echarts_dataset: {},
+      select_model_1: '',
+      select_model_2: '',
+      select_model_3: '',
+      all_models_1: [],
+      all_models_2: [],
+      all_models_3:[],
       echarts_models: {},
+      years:5,
     }
   },
   props: {},
   methods: {
-    selectModels(models) {
-      this.select_models = models
+    selectModels_1(models) {
+      this.select_model_1 = models
     },
-    selectDataset(dataset) {
-      this.select_dataset = dataset
+    selectModels_2(models) {
+      this.select_model_2 = models
+    },
+    selectModels_3(models) {
+      this.select_model_3 = models
     },
     fitting() {
-      service.post("getResultOfModel", {
-        "models": this.select_models,
-        "dataset": this.select_dataset,
+      service.post("loadModel_multi", {
+        "models": {
+          "prophet": [this.select_model_1],
+          "灰度预测": [this.select_model_3],
+          "翁氏模型":[this.select_model_2],
+        },
+        "years":this.years,
       }).then(
         (response) => {
-          console.log("############")
-          console.log("response:",response.data)
-          for (let key in response.data) {
-            if (key.indexOf("dataset") == 0) {
-              this.echarts_dataset["xAxis"] = response.data.dataset_xAxis
-              this.echarts_dataset["yAxis"] = response.data.dataset_yAxis
-            } else if(key.indexOf("k")==0){
-              this.k = response.data["k"];
-            } else {
-              this.echarts_models[key] = response.data[key]
-            }
-          }
-          console.log("changed:",this.echarts_dataset,this.echarts_models)
+          this.echarts_models = response.data
         }
       )
     }
   },
   mounted() {
-    service.get("getAllMetaModels").then(
-      (response) => {
-        this.all_models = response.data
-        console.log("all models:", this.all_models)
-      }
-    )
-    service.get("getAllDatasets").then(
-      (response) => {
-        this.all_datasets = response.data
-        console.log("all datasets:", this.all_datasets)
-      }
-    )
+    service.get("getSavedModels?model=灰度预测").then((response) => {
+      console.log(response.data);
+      this.all_models_3 = response.data;
+    });
+    service.get("getSavedModels?model=prophet").then((response) => {
+      console.log(response.data);
+      this.all_models_1 = response.data;
+    });
+    service.get("getSavedModels?model=翁氏模型").then((response) => {
+      console.log(response.data);
+      this.all_models_2 = response.data;
+    });
   },
-  components: { Upload, SelectVue, EchartsVue, MutliselectVue }
+  components: { Upload, SelectVue,  EchartsLoadModel_mutli }
 };
 </script>
 

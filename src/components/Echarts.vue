@@ -49,7 +49,6 @@ export default {
           {
             name: '预测值',
             type: 'line',
-            smooth: true,
             data: [220, 182, 191, 234, 290, 330, 310]
           }
         ]
