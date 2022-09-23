@@ -8,7 +8,7 @@ import GMVue from "../components/GM.vue"
 import prophet_report from "../components/prophet_report.vue"
 import wensi_report from "../components/wensi_report.vue"
 import gm_report from "../components/GM_report.vue"
-
+import preprocess from "../views/preprocess.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +22,11 @@ const router = createRouter({
       path: "/dataset",
       name: "dataset",
       component: DataSetView
+    },
+    {
+      path: "/preprocess",
+      name: "preprocess",
+      component:preprocess
     },
     {
       path: "/model",

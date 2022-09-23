@@ -14,11 +14,11 @@
             </el-icon>
             <span><font size="4">数据集</font></span>
           </el-menu-item>
-          <el-menu-item index="/model">
+          <el-menu-item index="/preprocess">
             <el-icon>
               <icon-menu />
             </el-icon>
-            <span><font size="4">模型预测</font></span>
+            <span><font size="4">数据预处理</font></span>
           </el-menu-item>
           <el-sub-menu index="modelShow">
             <template #title>
@@ -32,6 +32,12 @@
               <el-menu-item index="/GM">灰度预测模型</el-menu-item>
               <el-menu-item index="">更多模型待开发</el-menu-item>
           </el-sub-menu>
+          <el-menu-item index="/model">
+            <el-icon>
+              <icon-menu />
+            </el-icon>
+            <span><font size="4">模型效果对比</font></span>
+          </el-menu-item>
         </el-menu>
       </el-aside>
       <el-main>
