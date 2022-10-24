@@ -26,6 +26,7 @@ export default {
     this.echarts_dataset = data["echarts_dataset"];
     this.echarts_models = data["echarts_models"];
     
+    
     this.report = `
 ## Prophet模型报告
 
@@ -64,7 +65,7 @@ K=${data['pre_k']}
 K=${data["k"]}
 
 拟合误差值为（拟合误差为预测值/实际值的平均）：
-拟合误差 = 0.1
+拟合误差 = ${data["loss"]}
 
 模型拟合及预测效果图示：  
 效果图

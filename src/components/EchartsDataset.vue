@@ -1,5 +1,6 @@
 <template>
   <div id="dataset" style="height: 400px"></div>
+  <div id="cumulative" style="height: 400px"></div>
 </template>
 
 <script>
@@ -51,7 +52,10 @@ export default {
   watch: {
     dataset(newVal, oldVal) {
       this.$nextTick(() => {
-        var chartDom = document.getElementById("dataset");
+        if (!this.dataset.hasOwnProperty("domID")) {
+          this.dataset["domID"]="dataset"
+        }
+        var chartDom = document.getElementById(this.dataset["domID"]);
         var myChart = echarts.init(chartDom);
         let tmp_dataset = this.dataset;
         let _this = this;

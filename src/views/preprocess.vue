@@ -6,7 +6,19 @@
     <SelectVue :options="all_datasets" @getSelectedDataset="selectDataset"> </SelectVue>
     <p></p>
     <div>预处理方法:</div>
+    <p></p>
     <SelectPreprocess :options="all_methods" @getSelectedMethod="selectMethod"> </SelectPreprocess>
+    <div>
+      <div>窗口大小:</div>
+      <p></p>
+      <div>
+        <p style="margin-left: 10px">default</p>
+        <el-select v-model="window_size" multiple placeholder="Select" style="width: 240px">
+            <el-option v-for="item in window_size_set" :key="item.value" :label="item.label" :value="item.value" />
+        </el-select>
+      </div>
+      <p></p>
+    </div>
   </main>
   <p></p>
   <p><button @click="getResultOfPreprocess">查看预处理效果</button></p>
@@ -32,6 +44,37 @@ export default {
   name: "dataset",
   data() {
     return {
+      window_size: [3],
+      window_size_set: [
+        {
+          "label": 2,
+          "value": 2,
+        },
+        {
+          "label": 3,
+          "value":3,
+        },
+        {
+          "label": 4,
+          "value":4,
+        },
+        {
+          "label": 5,
+          "value":5,
+        },
+        {
+          "label": 6,
+          "value":6,
+        },
+        {
+          "label": 7,
+          "value":7,
+        },
+        {
+          "label": 8,
+          "value":8,
+        }
+      ],
       all_models: [],
       all_datasets: [1],
       selected_models: [],
@@ -51,15 +94,25 @@ export default {
   props: {},
   methods: {
     saveDataset() {
-      service.post("saveDataset", {
-        "name": this.selected_dataset + "_" + this.selected_method,
-        "base_data": this.echarts_dataset,
-        "data":this.echarts_preprocess,
-      }).then(
-        (response) => {
-          window.alert("保存成功,文件名为:"+this.selected_dataset + "_" + this.selected_method)
+      if (this.selected_dataset.split("_").length > 2) {
+        console.log("不难预处理已经预处理过的数据")
+        return;
+      } else {
+        if (this.window_size.length !=1) {
+          alert("窗口数量必须为1")
+          return;
         }
-      )
+        service.post("saveDataset", {
+          "name": this.selected_dataset + "_" + this.selected_method+"_"+this.window_size[0],
+          "base_data": this.echarts_dataset,
+          "data": this.echarts_preprocess,
+          "window_size":this.window_size[0],
+        }).then(
+          (response) => {
+            window.alert("保存成功,文件名为:"+this.selected_dataset + "_" + this.selected_method+"_"+this.window_size[0])
+          }
+        ) 
+      }
     },
     selectDataset(dataset) {
       this.selected_dataset = dataset;
@@ -71,7 +124,7 @@ export default {
       this.cur_tag = tag;
     },
     getResultOfPreprocess() {
-      service.get("getResultOfPreprocess?dataset=" + this.selected_dataset + "&method=" + this.selected_method).then(
+      service.get("getResultOfPreprocess?dataset=" + this.selected_dataset + "&method=" + this.selected_method+ "&window_size="+this.window_size.toString()).then(
         (response) => {
           console.log("###########")
           console.log(response.data)

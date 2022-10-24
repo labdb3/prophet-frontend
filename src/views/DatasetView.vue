@@ -19,9 +19,12 @@
     <EchartsDataset :dataset="dataset" :cur_tag="cur_tag" @changeTag="changeTag" ></EchartsDataset>
   </main>
   <main>
+    <EchartsDataset :dataset="cumulative_dataset"></EchartsDataset>
+  </main>
+  <!-- <main>
     <div>当前数据集标记的集合:</div>
     {{ tagSet }}
-  </main>
+  </main> -->
 
 </template>
 
@@ -62,8 +65,13 @@ export default {
       console.log("getDataset:", this.selected_dataset)
       service.get("getDataset?dataset=" + this.selected_dataset).then(
         (response) => {
-          console.log(response.data)
+          console.log("?:???",response.data)
           this.dataset = response.data
+          this.cumulative_dataset = {
+            "xAxis": response.data["xAxis"],
+            "yAxis": response.data["cumulative"],
+            "domID": "cumulative",
+          }
         }
       )
       let _this = this;

@@ -162,6 +162,17 @@ export default {
         });
     },
   },
+  watch: {
+    // whenever question changes, this function will run
+    value: {
+      handler(newVal, oldVal) {
+        this.nums = 1;
+        this.peak_rate = 0.4;
+        this.option = 0;
+      },
+      deep: true
+    }
+  },
   mounted() {
     service.get("getAllDatasets").then((response) => {
       this.options = response.data;

@@ -126,9 +126,21 @@ export default {
       curModel: "",
       loadModel_echarts_dataset: {},
       loadModel_echarts_models: {},
+      loss:0,
     };
   },
   props: {},
+  watch: {
+    // whenever question changes, this function will run
+    value: {
+      handler(newVal, oldVal) {
+        this.n_changepoints = 10;
+        this.changepoint_prior_scale = 50;
+        this.seasonality_prior_scale = 20;
+      },
+      deep: true
+    }
+  },
   methods: {
     download() {},
     gotoProphetReport() {
@@ -141,6 +153,7 @@ export default {
         pre_k: this.pre_k,
         echarts_dataset: this.echarts_dataset,
         echarts_models: this.echarts_models,
+        loss: this.loss,
       };
       var arr = JSON.stringify(obj);
       this.$router.push("/prophet_report/" + encodeURIComponent(arr));
@@ -164,13 +177,14 @@ export default {
             if (key.indexOf("dataset") == 0) {
               this.echarts_dataset["xAxis"] = response.data.dataset_xAxis;
               this.echarts_dataset["yAxis"] = response.data.dataset_yAxis;
-            } else if (key == "k") {
+            } else if (key == "k" || key=="loss") {
               continue;
             } else {
               this.echarts_models[key] = response.data[key];
             }
           }
           this.pre_k = response.data["k"];
+          this.loss = response.data["loss"];
           console.log("changed:", this.echarts_dataset, this.echarts_models);
         });
     },

@@ -81,6 +81,17 @@ export default {
     };
   },
   props: {},
+  watch: {
+    // whenever question changes, this function will run
+    value: {
+      handler(newVal, oldVal) {
+        this.a = 0;
+        this.b = 0;
+        this.c = 0;
+      },
+      deep: true
+    }
+  },
   methods: {
     download() {
       

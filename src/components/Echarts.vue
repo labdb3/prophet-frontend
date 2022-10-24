@@ -74,7 +74,7 @@ export default {
           for (let model in this.models) {
             var chartDom = document.getElementById(model);
             var myChart = echarts.init(chartDom);
-            this.option.title.text = model
+            this.option.title.text = model + "---" + (this.dataset["xAxis"].length -this.dataset["yAxis"].length) + "年"
             console.log(this.dataset)
             this.option.xAxis.data = this.dataset["xAxis"]
             this.option.series.at(0).data = this.dataset["yAxis"]

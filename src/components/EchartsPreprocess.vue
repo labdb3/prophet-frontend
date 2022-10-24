@@ -1,5 +1,5 @@
 <template>
-    <div id="load_model" style="height:400px;" v-for="(value, name) in preprocess">
+    <div :id="name" style="height:400px;" v-for="(value, name) in preprocess">
     </div>
 </template>
 
@@ -73,7 +73,7 @@ export default {
                 this.$nextTick(() => {
                     console.log("methods:", this.preprocess)
                     for (let method in this.preprocess) {
-                        var chartDom = document.getElementById("load_model");
+                        var chartDom = document.getElementById(method);
                         var myChart = echarts.init(chartDom);
                         this.option.title.text = method
                         console.log(this.dataset)
