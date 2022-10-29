@@ -13,19 +13,15 @@
     <SelectVue :options="all_datasets" @getSelectedDataset="selectDataset">
       <button @click="loadData"> 数据集浏览 </button>
     </SelectVue>
+    &nbsp;&nbsp; <button @click="deleteData">删除数据集</button>
   </main>
   <p></p>
   <main>
-    <EchartsDataset :dataset="dataset" :cur_tag="cur_tag" @changeTag="changeTag" ></EchartsDataset>
+    <EchartsDataset :dataset="dataset"></EchartsDataset>
   </main>
   <main>
     <EchartsDataset :dataset="cumulative_dataset"></EchartsDataset>
   </main>
-  <!-- <main>
-    <div>当前数据集标记的集合:</div>
-    {{ tagSet }}
-  </main> -->
-
 </template>
 
 <script>
@@ -61,6 +57,14 @@ export default {
     selectTag(tag) {
       this.cur_tag = tag;
     },
+    deleteData() {
+      service.get("deleteData?dataset=" + this.selected_dataset).then(
+        (response) => {
+          location.reload()
+          alert("删除成功!")
+        }
+      )  
+    },
     loadData() {
       console.log("getDataset:", this.selected_dataset)
       service.get("getDataset?dataset=" + this.selected_dataset).then(
@@ -74,28 +78,7 @@ export default {
           }
         }
       )
-      let _this = this;
-      let fun = function () {
-        console.log(_this.dataset["name"])
-        service.get("getTagData?dataset="+_this.dataset["name"]+"&cur_tag="+_this.cur_tag).then(
-        (response) => {
-          console.log("tagset",response.data)
-          _this.tagSet = response.data
-        }
-      )
-      }
-      setTimeout(fun, 1000)
-      
     },
-    changeTag(obj) {
-      service.get("getTagData?dataset="+this.dataset["name"]+"&cur_tag="+_this.cur_tag).then(
-        (response) => {
-          console.log(response.data)
-          this.tagSet = response.data
-        }
-      )
-
-    }
   },
   mounted() {
     service.get("getAllDatasets").then(

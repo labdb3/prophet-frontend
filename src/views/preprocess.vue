@@ -27,6 +27,9 @@
   </main>
   <p></p>
   <p><button @click="saveDataset">保存成为数据集</button></p>
+  <main>
+    <img :src="'data:image/png;base64,'+imgurl" alt="">
+  </main>
 </template>
 
 <script>
@@ -44,6 +47,7 @@ export default {
   name: "dataset",
   data() {
     return {
+      imgurl:'',
       window_size: [3],
       window_size_set: [
         {
@@ -84,18 +88,15 @@ export default {
       echarts_models: {},
       echarts_preprocess:{},
       dataset: {},
-      tagSet: [],
-      all_tags: [],
-      cur_tag: "",
       dataset_1: {},
-      cur_tag_1: {},
+      all_methods:[],
     };
   },
   props: {},
   methods: {
     saveDataset() {
       if (this.selected_dataset.split("_").length > 2) {
-        console.log("不难预处理已经预处理过的数据")
+        alert("不难预处理已经预处理过的数据")
         return;
       } else {
         if (this.window_size.length !=1) {
@@ -124,10 +125,16 @@ export default {
       this.cur_tag = tag;
     },
     getResultOfPreprocess() {
+      if (this.selected_dataset.split("_").length > 2) {
+        alert("不难预处理已经预处理过的数据")
+        return;
+      }
       service.get("getResultOfPreprocess?dataset=" + this.selected_dataset + "&method=" + this.selected_method+ "&window_size="+this.window_size.toString()).then(
         (response) => {
           console.log("###########")
           console.log(response.data)
+          this.echarts_preprocess = {}
+          this.echarts_dataset = {}
           for (let key in response.data) {
             if (key.indexOf("dataset") == 0) {
               this.echarts_dataset["xAxis"] = response.data.dataset_xAxis
@@ -163,16 +170,14 @@ export default {
       };
       setTimeout(fun, 1000);
     },
-    changeTag(obj) {
-      service
-        .get("getTagData?dataset=" + this.dataset["name"] + "&cur_tag=" + _this.cur_tag)
-        .then((response) => {
-          console.log(response.data);
-          this.tagSet = response.data;
-        });
-    },
   },
   mounted() {
+    service.get("showPhoto").then(
+      (response) => {
+        console.log("///////",response.data)
+        this.imgurl = response.data
+      }
+    )
     service.get("getAllDatasets").then((response) => {
       this.all_datasets = response.data;
       console.log("all datasets:", this.all_datasets);

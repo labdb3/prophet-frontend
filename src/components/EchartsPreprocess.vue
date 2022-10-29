@@ -1,5 +1,7 @@
 <template>
-    <div :id="name" style="height:400px;" v-for="(value, name) in preprocess">
+    <div>
+        <div :id="name" style="height:400px;" v-for="(value, name) in preprocess">
+        </div>
     </div>
 </template>
 

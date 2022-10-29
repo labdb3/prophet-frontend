@@ -34,7 +34,7 @@
   <p></p>
   <p></p>
   <div>
-    <button @click="download">下载数据</button>&nbsp;&nbsp;
+    <!-- <button @click="download">下载数据</button>&nbsp;&nbsp; -->
     <button @click="gotoProphetReport">查看生成的报告</button>
     
   </div>
@@ -50,6 +50,7 @@
     </el-select>&nbsp;&nbsp; 预测年数:
     <el-input v-model="years" style="width: 180px" size="large" placeholder="Please Input" />&nbsp;&nbsp;
     <button @click="loadModel">加载模型</button>
+    &nbsp;&nbsp;<button @click="deleteModel">删除模型</button>
   </div>
   <main>
     <EchartsLoadModel :dataset="loadModel_echarts_dataset" :models="loadModel_echarts_models"></EchartsLoadModel>
@@ -179,6 +180,14 @@ export default {
           console.log("changed:", this.echarts_dataset, this.echarts_models);
         });
     },
+    deleteModel() {
+      service.get("deleteModel?model_type=翁氏模型&model_name=" + this.curModel).then(
+        (response) => {
+          location.reload()
+          alert("删除成功")
+        }
+      )
+    }
   },
   mounted() {
     service.get("getAllDatasets").then((response) => {

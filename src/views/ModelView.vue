@@ -62,6 +62,7 @@ export default {
       this.select_model_3 = models
     },
     fitting() {
+      console.log("prophet:",this.select_model_1,this.select_model_2,this.select_model_3)
       service.post("loadModel_multi", {
         "models": {
           "prophet": [this.select_model_1],

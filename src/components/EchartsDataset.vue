@@ -5,8 +5,6 @@
 
 <script>
 import * as echarts from "echarts";
-import service from "../utils/request";
-
 export default {
   data() {
     return {
@@ -57,23 +55,6 @@ export default {
         }
         var chartDom = document.getElementById(this.dataset["domID"]);
         var myChart = echarts.init(chartDom);
-        let tmp_dataset = this.dataset;
-        let _this = this;
-        myChart.on("click", function (params) {
-          alert(params.name);
-          console.log(tmp_dataset);
-          service
-            .get(
-              "saveTag?dataset=" + tmp_dataset["name"] + "&year=" + params.name + "&cur_tag=" + _this.cur_tag
-            )
-            .then((response) => {
-              console.log(response);
-            });
-          let fun = function(){
-            _this.$emit('changeTag', tmp_dataset["name"]);
-          }
-          setTimeout(fun, 1000 )
-        });
         console.log(this.dataset);
         this.option.series.at(0).data = this.dataset["yAxis"];
 

@@ -68,7 +68,7 @@
   <p></p>
   <p></p>
   <div>
-    <button @click="download">下载数据</button>&nbsp;&nbsp;
+    <!-- <button @click="download">下载数据</button>&nbsp;&nbsp; -->
     <button @click="gotoProphetReport">查看生成的报告</button>
   </div>
   <p></p>
@@ -93,6 +93,7 @@
       placeholder="Please Input"
     />&nbsp;&nbsp;
     <button @click="loadModel">加载模型</button>
+     &nbsp;&nbsp;<button @click="deleteModel">删除模型</button>
   </div>
   <main>
     <EchartsLoadModel
@@ -232,6 +233,14 @@ export default {
           console.log("changed:", this.echarts_dataset, this.echarts_models);
         });
     },
+    deleteModel() {
+      service.get("deleteModel?model_type=prophet&model_name=" + this.curModel).then(
+        (response) => {
+          location.reload()
+          alert("删除成功")
+        }
+      )
+    }
   },
   mounted() {
     service.get("getAllDatasets").then((response) => {
