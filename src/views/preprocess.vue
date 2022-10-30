@@ -172,7 +172,13 @@ export default {
     },
   },
   mounted() {
-    service.get("showPhoto").then(
+    // service.get("showPhoto").then(
+    //   (response) => {
+    //     console.log("///////",response.data)
+    //     this.imgurl = response.data
+    //   }
+    // )
+    service.get("clustering").then(
       (response) => {
         console.log("///////",response.data)
         this.imgurl = response.data

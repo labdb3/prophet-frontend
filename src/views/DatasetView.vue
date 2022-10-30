@@ -4,7 +4,6 @@
   <main>
     <Upload></Upload>
   </main>
-
   <p></p>
   <p></p>
   <div>数据集浏览:</div>
@@ -14,8 +13,12 @@
       <button @click="loadData"> 数据集浏览 </button>
     </SelectVue>
     &nbsp;&nbsp; <button @click="deleteData">删除数据集</button>
+    &nbsp;&nbsp; <button @click="loadFitting">加载拟合累加曲线</button>
   </main>
   <p></p>
+  <main>
+  <img :src="fitting" id="photo" alt=""/>
+  </main>
   <main>
     <EchartsDataset :dataset="dataset"></EchartsDataset>
   </main>
@@ -37,6 +40,7 @@ export default {
   name: "dataset",
   data() {
     return {
+      fitting:'',
       all_models: [],
       all_datasets: [1],
       selected_models: [],
@@ -79,6 +83,17 @@ export default {
         }
       )
     },
+    loadFitting() {
+      
+      service.get("getSumFitting?dataset="+this.selected_dataset).then(
+        (response) => {
+        console.log("????",response.data)
+          this.fitting = 'data:image/png;base64,' + response.data;
+          //document.getElementById('photo').src = 'data:image/png;base64,' + this.imgurl;
+          $('#photo').attr('src','data:image/png;base64,' + this.fitting);
+      }
+      )
+    }
   },
   mounted() {
     service.get("getAllDatasets").then(
