@@ -9,6 +9,8 @@ import prophet_report from "../components/prophet_report.vue"
 import wensi_report from "../components/wensi_report.vue"
 import gm_report from "../components/GM_report.vue"
 import preprocess from "../views/preprocess.vue"
+import fittingVue from "../views/fitting.vue"
+import clusteringVue from "../views/clustering.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -70,6 +72,16 @@ const router = createRouter({
       name: "gm_report",
       component: gm_report,
       props: true,
+    },
+    {
+      path: "/fitting",
+      name: "fitting",
+      component:fittingVue,
+    },
+    {
+      path: "/clustering",
+      name: "clustering",
+      component:clusteringVue,
     }
   ],
 });

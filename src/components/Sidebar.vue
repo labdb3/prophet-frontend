@@ -12,13 +12,19 @@
             <el-icon>
               <icon-menu />
             </el-icon>
-            <span><font size="4">数据集</font></span>
+            <span><font size="4">数据集管理</font></span>
           </el-menu-item>
           <el-menu-item index="/preprocess">
             <el-icon>
               <icon-menu />
             </el-icon>
-            <span><font size="4">数据预处理</font></span>
+            <span><font size="4">数据平滑</font></span>
+          </el-menu-item>
+          <el-menu-item index="/clustering">
+            <el-icon>
+              <icon-menu />
+            </el-icon>
+            <span><font size="4">数据聚类</font></span>
           </el-menu-item>
           <el-sub-menu index="modelShow">
             <template #title>
@@ -37,6 +43,12 @@
               <icon-menu />
             </el-icon>
             <span><font size="4">模型效果对比</font></span>
+          </el-menu-item>
+          <el-menu-item index="/fitting">
+            <el-icon>
+              <icon-menu />
+            </el-icon>
+            <span><font size="4">累积曲线</font></span>
           </el-menu-item>
         </el-menu>
       </el-aside>
