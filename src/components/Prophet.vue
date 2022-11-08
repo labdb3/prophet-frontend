@@ -13,30 +13,6 @@
       </el-select>
     </div>
     <p></p>
-    n_changepoints(突变性):
-    <el-input
-      v-model="n_changepoints"
-      style="width: 180px"
-      size="large"
-      placeholder="Please Input"
-    />
-    <p></p>
-    changepoint_prior_scale(趋势性):
-    <el-input
-      v-model="changepoint_prior_scale"
-      style="width: 180px"
-      size="large"
-      placeholder="Please Input"
-    />
-    <p></p>
-    seasonality_prior_scale(周期性):
-    <el-input
-      v-model="seasonality_prior_scale"
-      style="width: 180px"
-      size="large"
-      placeholder="Please Input"
-    />
-    <p></p>
     k(模型拟合参数):
     <el-input
       v-model="k"
@@ -165,9 +141,6 @@ export default {
           model: "prophet",
           dataset: this.value,
           params: {
-            n_changepoints: parseInt(this.n_changepoints),
-            changepoint_prior_scale: parseInt(this.changepoint_prior_scale),
-            seasonality_prior_scale: parseInt(this.seasonality_prior_scale),
             k: parseFloat(this.k),
             years: parseInt(this.years),
           },
