@@ -1,53 +1,36 @@
 <template>
-  <main>
-    <img :src="'data:image/png;base64,'+imgurl" alt="">
-  </main>
+    <div>
+    <button @click="clustering">重新计算</button>
+    <p></p>
+    <p></p>
+        <img class="p" src="http://127.0.0.1:8000/static/clustering.jpeg">
+    </div>
 </template>
-
 <script>
-import Upload from "../components/upload.vue";
-import SelectVue from "../components/select.vue";
-import EchartsVue from "../components/Echarts.vue";
-import MutliselectVue from "../components/mutliselect.vue";
-import service from "../utils/request";
-import EchartsDataset from "../components/EchartsDataset.vue";
-import SelectTag from "../components/selectTag.vue";
-import SelectPreprocess from "../components/selectPreprocess.vue"
-import EchartsPreprocess from "../components/EchartsPreprocess.vue"
+import service from '../utils/request';
 
 export default {
-  name: "dataset",
-  data() {
-    return {
-      imgurl:'',
-    };
+    data(){
+        var body = null;
+        return {body}
   },
-  props: {},
-  mounted() {
-    // service.get("showPhoto").then(
-    //   (response) => {
-    //     console.log("///////",response.data)
-    //     this.imgurl = response.data
-    //   }
-    // )
-    service.get("clustering").then(
+  methods: {
+    clustering() {
+        service.get("clustering").then(
       (response) => {
-        console.log("///////",response.data)
-        this.imgurl = response.data
+        window.alert("大约需要几分钟才可以看到结果的更新")
       }
     )
-  },
-  components: {
-    Upload,
-    SelectVue,
-    EchartsVue,
-    MutliselectVue,
-    EchartsDataset,
-    SelectTag,
-    SelectPreprocess,
-    EchartsPreprocess
-},
-};
+      }
+    }
+}
+ 
 </script>
-
-<style lang="scss" scoped></style>
+<style>
+.p{
+  width: 1000px;  
+  height: 700px;
+  border: 1px solid #aaa;
+  background: url('图片地址') no-repeat center;
+}
+</style>

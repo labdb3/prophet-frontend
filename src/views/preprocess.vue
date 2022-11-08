@@ -172,18 +172,6 @@ export default {
     },
   },
   mounted() {
-    // service.get("showPhoto").then(
-    //   (response) => {
-    //     console.log("///////",response.data)
-    //     this.imgurl = response.data
-    //   }
-    // )
-    service.get("clustering").then(
-      (response) => {
-        console.log("///////",response.data)
-        this.imgurl = response.data
-      }
-    )
     service.get("getAllDatasets").then((response) => {
       this.all_datasets = response.data;
       console.log("all datasets:", this.all_datasets);

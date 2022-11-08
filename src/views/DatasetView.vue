@@ -90,7 +90,7 @@ export default {
         console.log("????",response.data)
           this.fitting = 'data:image/png;base64,' + response.data;
           //document.getElementById('photo').src = 'data:image/png;base64,' + this.imgurl;
-          $('#photo').attr('src','data:image/png;base64,' + this.fitting);
+          //$('#photo').attr('src','data:image/png;base64,' + this.fitting);
       }
       )
     }
