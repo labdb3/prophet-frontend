@@ -16,9 +16,10 @@ export default {
   },
   methods: {
     clustering() {
+      window.alert("大约需要几分钟才可以看到结果的更新")
         service.get("clustering").then(
       (response) => {
-        window.alert("大约需要几分钟才可以看到结果的更新")
+        
       }
     )
       }

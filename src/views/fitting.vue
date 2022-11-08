@@ -11,6 +11,7 @@
   <p></p>
   <main>
   <img :src="fitting" id="photo" alt=""/>
+  <img :src="actual" id="photo" alt=""/>
   </main>
   <main>
     <EchartsDataset :dataset="dataset"></EchartsDataset>
@@ -30,7 +31,8 @@ export default {
   name: "dataset",
   data() {
     return {
-      fitting:'',
+      fitting: '',
+      actual:'',
       all_models: [],
       all_datasets: [1],
       selected_models: [],
@@ -70,7 +72,8 @@ export default {
       service.get("getSumFitting?dataset="+this.selected_dataset).then(
         (response) => {
         console.log("????",response.data)
-          this.fitting = 'data:image/png;base64,' + response.data;
+          this.fitting = 'data:image/png;base64,' + response.data["sum"];
+          this.actual = 'data:image/png;base64,' + response.data["actual"]
           //document.getElementById('photo').src = 'data:image/png;base64,' + this.imgurl;
       }
       )
