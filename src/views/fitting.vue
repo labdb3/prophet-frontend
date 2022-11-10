@@ -7,11 +7,18 @@
       <button @click="loadData"> 数据集浏览 </button>
     </SelectVue>
     &nbsp;&nbsp; <button @click="loadFitting">加载拟合累加曲线</button>
+    
+    
   </main>
   <p></p>
   <main>
   <img :src="fitting" id="photo" alt=""/>
   <img :src="actual" id="photo" alt=""/>
+  </main>
+  <main>
+  <p></p>
+  <p></p>
+  <li v-for="item in list">{{item}}</li>
   </main>
   <main>
     <EchartsDataset :dataset="dataset"></EchartsDataset>
@@ -31,6 +38,7 @@ export default {
   name: "dataset",
   data() {
     return {
+      list:'',
       fitting: '',
       actual:'',
       all_models: [],
@@ -74,6 +82,7 @@ export default {
         console.log("????",response.data)
           this.fitting = 'data:image/png;base64,' + response.data["sum"];
           this.actual = 'data:image/png;base64,' + response.data["actual"]
+          this.list = response.data["list"]
           //document.getElementById('photo').src = 'data:image/png;base64,' + this.imgurl;
       }
       )

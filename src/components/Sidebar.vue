@@ -31,7 +31,7 @@
               <el-icon>
                 <icon-menu></icon-menu>
               </el-icon>
-              <span><font size="4">模型调优</font></span>
+              <span><font size="4">预测模型</font></span>
             </template>
               <el-menu-item index="/prophet">prophet 调优</el-menu-item>
               <el-menu-item index="/wensi">翁氏模型</el-menu-item>
