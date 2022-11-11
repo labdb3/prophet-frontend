@@ -69,7 +69,7 @@ export default {
           "灰度预测": [this.select_model_3],
           "翁氏模型":[this.select_model_2],
         },
-        "years":this.years,
+        "years":parseInt(this.years),
       }).then(
         (response) => {
           this.echarts_models = response.data

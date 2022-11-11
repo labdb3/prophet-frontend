@@ -15,6 +15,8 @@ import '@kangc/v-md-editor/lib/plugins/emoji/emoji.css';
 import createKatexPlugin from '@kangc/v-md-editor/lib/plugins/katex/cdn';
 import createLineNumbertPlugin from '@kangc/v-md-editor/lib/plugins/line-number/index';
 
+import ArcoVue from '@arco-design/web-vue';
+import '@arco-design/web-vue/dist/arco.css';
 
 // Prism
 import Prism from 'prismjs';
@@ -30,7 +32,7 @@ VMdPreview.use(createLineNumbertPlugin());
 
 const app = createApp(App)
 
-
+app.use(ArcoVue);
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)

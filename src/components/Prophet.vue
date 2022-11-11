@@ -32,7 +32,7 @@
     <p></p>
 
     <div>
-      <button @click="fitting">拟合结果</button>&nbsp;&nbsp;
+      <a-button type="primary" :loading="loading1" @click="fitting">拟合结果</a-button>&nbsp;&nbsp;
       <button @click="save">保存当前模型及参数</button>
     </div>
   </div>
@@ -83,12 +83,14 @@
 import service from "../utils/request";
 import Echarts from "./Echarts.vue";
 import EchartsLoadModel from "./EchartsLoadModel.vue";
+import { ref } from 'vue';
 
 export default {
   name: "Test",
   created() {},
   data() {
     return {
+      loading1:ref(false),
       value: "",
       options: [],
       n_changepoints: 10,
@@ -136,6 +138,7 @@ export default {
       this.$router.push("/prophet_report/" + encodeURIComponent(arr));
     },
     fitting() {
+      this.loading1 = ref(true);
       service
         .post("getResultWithParams", {
           model: "prophet",
@@ -146,6 +149,7 @@ export default {
           },
         })
         .then((response) => {
+          this.loading1 = ref(false);
           console.log("response", response.data);
           for (let key in response.data) {
             if (key.indexOf("dataset") == 0) {
@@ -159,6 +163,10 @@ export default {
           }
           this.pre_k = response.data["k"];
           this.loss = response.data["loss"];
+          this.n_changepoints = response.data["n_changepoints"]
+          this.changepoint_prior_scale = response.data["changepoint_prior_scale"]
+          this.seasonality_prior_scale = response.data["seasonality_prior_scale"]
+
           console.log("changed:", this.echarts_dataset, this.echarts_models);
         });
     },
@@ -198,7 +206,6 @@ export default {
               this.loadModel_echarts_dataset["xAxis"] = response.data.dataset_xAxis;
               this.loadModel_echarts_dataset["yAxis"] = response.data.dataset_yAxis;
             } else if (key == "k") {
-              this.k = response.data[key];
             } else {
               this.loadModel_echarts_models[key] = response.data[key];
             }
