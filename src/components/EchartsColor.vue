@@ -1,5 +1,5 @@
 <template>
-  <div id="load_model" style="height: 400px" v-for="(value, name) in models"></div>
+  <div id="fit" style="height: 400px"></div>
 </template>
 
 <script>
@@ -78,19 +78,47 @@ export default {
         this.$nextTick(() => {
           console.log("models:", this.models);
           for (let model in this.models) {
-            var chartDom = document.getElementById("load_model");
+            if (model == "loss") continue;
+            var chartDom = document.getElementById(model);
             var myChart = echarts.init(chartDom);
-            this.option.title.text = model;
+            this.option.title.text =
+              model +
+              "---" +
+              (this.dataset["xAxis"].length - this.dataset["yAxis"].length) +
+              "年";
             console.log(this.dataset);
             this.option.xAxis.data = this.dataset["xAxis"];
             this.option.series.at(0).data = this.dataset["yAxis"];
             this.option.series.at(1).data = this.models[model];
+            console.log("color", this.color);
+            if (typeof(this.color)!="undefined" && this.color.length > 1) {
+              this.option.visualMap.pieces = this.color;
+              console.log("color", this.color);
+            }
             this.option && myChart.setOption(this.option);
           }
         });
       },
       deep: true,
     },
+  },
+  mounted() {
+    console.log("models:", this.models);
+    for (let model in this.models) {
+      var chartDom = document.getElementById(model);
+      var myChart = echarts.init(chartDom);
+      this.option.title.text = model;
+      console.log(this.dataset);
+      this.option.xAxis.data = this.dataset["xAxis"];
+      this.option.series.at(0).data = this.dataset["yAxis"];
+      this.option.series.at(1).data = this.models[model];
+      console.log("color", this.color);
+      if (typeof(this.color)!="undefined" && this.color.length > 1) {
+        this.option.visualMap.pieces = this.color;
+        console.log("color", this.color);
+      }
+      this.option && myChart.setOption(this.option);
+    }
   },
 };
 </script>

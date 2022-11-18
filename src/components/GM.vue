@@ -31,6 +31,16 @@
   <main>
     <Echarts :dataset="echarts_dataset" :models="echarts_models"></Echarts>
   </main>
+  <main>
+    <EchartsColor :dataset="echarts_dataset" :models="echarts_models_fit" :color="color"></EchartsColor>
+  </main>
+  <main>
+  <!-- <ol>
+    <li v-for="site in sites">
+      <v-md-preview :text="site"></v-md-preview>
+    </li>
+  </ol> -->
+  </main>
   <p></p>
   <p></p>
   <div>
@@ -60,12 +70,16 @@
 import service from "../utils/request";
 import Echarts from "./Echarts.vue";
 import EchartsLoadModel from "./EchartsLoadModel.vue";
+import EchartsColor from "./EchartsColor.vue"
 
 export default {
   name: "wensi",
   created() {},
   data() {
     return {
+      echarts_models_fit:[],
+      color:[],
+      sites:["$$ \\frac{2*${Nm_l[i]}}{1 + cosh(${b_l[i]} * (t - ${tm_l[i]}))} $$"],
       value: "",
       options: [],
       nums:1,
@@ -111,7 +125,12 @@ export default {
               this.echarts_dataset["yAxis"] = response.data.dataset_yAxis;
             } else if (key == "msg") {
               window.alert(response.data["msg"])
-
+            } else if (key == "color") {
+              this.color = response.data.color;
+            } else if (key == "Nm_l" || key == "tm_l" || key == "b_l") {
+              
+            } else if (key == "fit") {
+              this.echarts_models_fit[key] = response.data[key];
             }
             else {
               this.echarts_models[key] = response.data[key];
@@ -192,7 +211,7 @@ export default {
       this.savedModels = response.data;
     });
   },
-  components: { Echarts, EchartsLoadModel },
+  components: { Echarts, EchartsLoadModel,EchartsColor },
 };
 </script>
 
