@@ -33,3 +33,14 @@ npm run build
 ```sh
 npm run test:unit
 ```
+
+tmux new -s backend
+python manage.py runserver 0.0.0.0:8000
+
+tmux new -s frontend
+npm run dev
+
+tmux new -s mongo
+./mongod --config /usr/local/mongodb/etc/mongodb.conf
+
+
